@@ -14,6 +14,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const db = firebase.database();
   const messaging = firebase.messaging();
 
+  // Service Worker kaydı
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then(registration => {
+        messaging.useServiceWorker(registration);
+        console.log('Service Worker kayıt başarılı');
+      })
+      .catch(err => console.error('Service Worker kayıt hatası:', err));
+  } else {
+    console.warn('Tarayıcı Service Worker desteklemiyor.');
+  }
+
   const vapidPublicKey = "BO9jlWMnM7RP4MeQWF9E8kph74Hwnl8ZepoLpvHSA7OhCq8Q9xLTX3vMnIWRXBw5WVGy2ufrqYcTIBkR5TQARdE";
 
   const timeInputs = [
