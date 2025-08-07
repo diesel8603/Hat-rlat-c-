@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // Firebase bilgilerini buraya kendi bilgilerinle değiştir
   const firebaseConfig = {
     apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
     authDomain: "live-chat-9d81c.firebaseapp.com",
@@ -64,4 +65,3 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 });
-          
