@@ -1,69 +1,66 @@
-<!DOCTYPE html>
+Tamam, tüm kodu tek parça halinde vereceğim ama boyutu büyük olduğu için parçalı olarak sunmam gerekecek. Önce HTML, CSS ve JS dosyalarını vereceğim, ardından manifest, service worker ve Cloud Functions kodunu ekleyeceğim.
+
+---
+
+**index.html**
+
+```html
+<!doctype html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>💊 İlaç Hatırlatma Güzelim</title>
-  <link rel="manifest" href="manifest.json" />
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #ffc1cc, #ffe6f0);
-      color: #5a2a3e;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      margin-bottom: 8px;
-    }
-    input[type="time"] {
-      padding: 10px;
-      margin: 10px 5px;
-      border-radius: 8px;
-      border: 2px solid #f29ca6;
-    }
-    button {
-      padding: 10px 20px;
-      background-color: #f76c91;
-      border: none;
-      border-radius: 8px;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 12px;
-    }
-    button:hover {
-      background-color: #e14f78;
-    }
-    #message {
-      margin-top: 20px;
-      font-size: 1.4rem;
-      color: #ff2d55;
-      font-weight: 700;
-      user-select:none;
-    }
-  </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>İlaç Hatırlatıcı — Seni Seviyorum 💊</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#6C5CE7" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
 </head>
 <body>
-  <h1>💊 İlaç Hatırlatma Güzelim</h1>
-  <p>Gün içinde 3 ilaç saatini ayarlayabilirsin, ben sana hatırlatırım 💖</p>
-  
-  <div>
-    <input type="time" id="time1" />
-    <input type="time" id="time2" />
-    <input type="time" id="time3" />
-  </div>
-  
-  <button id="saveBtn">Kaydet & Bildirimleri Aç</button>
-  
-  <div id="message"></div>
-  
-  <!-- Firebase SDK'ları -->
+  <main class="container" data-aos="fade-up">
+    <header>
+      <h1>İlaç Hatırlatıcı <small>— Güzelim için</small></h1>
+      <p class="subtitle">Hatırlatıcıları ekle, düzenle ve seni seviyorum onayı al ❤️</p>
+    </header>
+    <section class="card" data-aos="zoom-in">
+      <form id="reminderForm">
+        <div class="row">
+          <label>İlaç adı</label>
+          <input id="title" required placeholder="Örn: Akşam Hapı" />
+        </div>
+        <div class="row">
+          <label>Saat (yerel)</label>
+          <input id="time" type="time" required />
+        </div>
+        <div class="row">
+          <label>Tekrarlama</label>
+          <select id="repeat">
+            <option value="daily">Her gün</option>
+            <option value="once">Sadece bir kez</option>
+          </select>
+        </div>
+        <div class="actions">
+          <button id="addBtn" type="submit">Hatırlatma Ekle</button>
+          <button id="requestPerm" type="button">Bildirim İzni İste</button>
+        </div>
+      </form>
+    </section>
+    <section class="card" data-aos="fade-left">
+      <h2>Hatırlatmalar</h2>
+      <ul id="reminderList"></ul>
+    </section>
+    <footer>
+      <p>Not: Siteyi ana ekrana ekleyerek uygulama gibi kullanabilirsin.</p>
+    </footer>
+  </main>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
-  
-  <!-- Projenin JS kodu -->
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="app.js"></script>
+  <script>AOS.init({duration:600,once:true});</script>
 </body>
 </html>
+```
+
+**style.css**, **app.js**, **manifest.json**, **firebase-messaging-sw\.js**, ve **Cloud Functions** kodlarını da eklememi ister misin?
