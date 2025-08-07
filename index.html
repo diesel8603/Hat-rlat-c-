@@ -1,66 +1,57 @@
-Tamam, tüm kodu tek parça halinde vereceğim ama boyutu büyük olduğu için parçalı olarak sunmam gerekecek. Önce HTML, CSS ve JS dosyalarını vereceğim, ardından manifest, service worker ve Cloud Functions kodunu ekleyeceğim.
-
----
-
-**index.html**
-
-```html
-<!doctype html>
+<!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>İlaç Hatırlatıcı — Seni Seviyorum 💊</title>
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#6C5CE7" />
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sana Özel Hatırlatıcı 💖</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- AOS Animasyon Kütüphanesi -->
   <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
+
+  <!-- Manifest -->
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <main class="container" data-aos="fade-up">
-    <header>
-      <h1>İlaç Hatırlatıcı <small>— Güzelim için</small></h1>
-      <p class="subtitle">Hatırlatıcıları ekle, düzenle ve seni seviyorum onayı al ❤️</p>
-    </header>
-    <section class="card" data-aos="zoom-in">
-      <form id="reminderForm">
-        <div class="row">
-          <label>İlaç adı</label>
-          <input id="title" required placeholder="Örn: Akşam Hapı" />
-        </div>
-        <div class="row">
-          <label>Saat (yerel)</label>
-          <input id="time" type="time" required />
-        </div>
-        <div class="row">
-          <label>Tekrarlama</label>
-          <select id="repeat">
-            <option value="daily">Her gün</option>
-            <option value="once">Sadece bir kez</option>
-          </select>
-        </div>
-        <div class="actions">
-          <button id="addBtn" type="submit">Hatırlatma Ekle</button>
-          <button id="requestPerm" type="button">Bildirim İzni İste</button>
-        </div>
-      </form>
+  <header data-aos="fade-down">
+    <h1>💖 Sana Özel Hatırlatıcı 💖</h1>
+    <p>Sevgiyle dolu hatırlatmalarını ekle ✨</p>
+  </header>
+
+  <main>
+    <section class="add-reminder" data-aos="zoom-in">
+      <input type="text" id="reminderText" placeholder="Hatırlatmak istediğin şey..." />
+      <input type="datetime-local" id="reminderTime" />
+      <button id="addReminder">Ekle 💌</button>
     </section>
-    <section class="card" data-aos="fade-left">
-      <h2>Hatırlatmalar</h2>
+
+    <section class="reminders" data-aos="fade-up">
+      <h2>📜 Hatırlatmaların</h2>
       <ul id="reminderList"></ul>
     </section>
-    <footer>
-      <p>Not: Siteyi ana ekrana ekleyerek uygulama gibi kullanabilirsin.</p>
-    </footer>
+
+    <section class="love-message" data-aos="flip-left">
+      <button id="loveBtn">💖 Bana Tıkla 💖</button>
+      <p id="loveText"></p>
+    </section>
   </main>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
+
+  <footer data-aos="fade-up">
+    <p>❤️ Senin için yapıldı ❤️</p>
+  </footer>
+
+  <!-- AOS Script -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000 });
+  </script>
+
+  <!-- Ana Script -->
   <script src="app.js"></script>
-  <script>AOS.init({duration:600,once:true});</script>
 </body>
 </html>
-```
-
-**style.css**, **app.js**, **manifest.json**, **firebase-messaging-sw\.js**, ve **Cloud Functions** kodlarını da eklememi ister misin?
