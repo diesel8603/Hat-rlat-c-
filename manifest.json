@@ -1,0 +1,15 @@
+{
+  "name": "Hatırlatıcı 💖",
+  "short_name": "Hatırlatıcı",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffe0ec",
+  "theme_color": "#ffe0ec",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/4221/4221419.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
