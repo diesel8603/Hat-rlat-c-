@@ -1,57 +1,32 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sana Özel Hatırlatıcı 💖</title>
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- AOS Animasyon Kütüphanesi -->
-  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
-
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
-
-  <!-- Manifest -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💊 İlaç Hatırlatma - Sevgilim İçin 💖</title>
+  <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"/>
 </head>
 <body>
-  <header data-aos="fade-down">
-    <h1>💖 Sana Özel Hatırlatıcı 💖</h1>
-    <p>Sevgiyle dolu hatırlatmalarını ekle ✨</p>
-  </header>
+  <div class="container" data-aos="fade-up">
+    <h1>💖 İlaç Hatırlatma 💖</h1>
+    <p>Sevgilim, sağlığın her şeyden önemli 💊</p>
 
-  <main>
-    <section class="add-reminder" data-aos="zoom-in">
-      <input type="text" id="reminderText" placeholder="Hatırlatmak istediğin şey..." />
-      <input type="datetime-local" id="reminderTime" />
-      <button id="addReminder">Ekle 💌</button>
-    </section>
+    <div class="form">
+      <input type="time" id="timeInput">
+      <button id="addBtn">Hatırlatma Ekle</button>
+    </div>
 
-    <section class="reminders" data-aos="fade-up">
-      <h2>📜 Hatırlatmaların</h2>
-      <ul id="reminderList"></ul>
-    </section>
+    <ul id="reminderList"></ul>
+  </div>
 
-    <section class="love-message" data-aos="flip-left">
-      <button id="loveBtn">💖 Bana Tıkla 💖</button>
-      <p id="loveText"></p>
-    </section>
-  </main>
-
-  <footer data-aos="fade-up">
-    <p>❤️ Senin için yapıldı ❤️</p>
-  </footer>
-
-  <!-- AOS Script -->
+  <script src="app.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script>
-    AOS.init({ duration: 1000 });
+    AOS.init();
   </script>
-
-  <!-- Ana Script -->
-  <script src="app.js"></script>
 </body>
 </html>
