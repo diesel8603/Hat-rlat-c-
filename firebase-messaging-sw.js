@@ -1,5 +1,5 @@
-importScripts('https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/9.6.10/firebase-messaging.js');
 
 firebase.initializeApp({
   apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
@@ -10,15 +10,3 @@ firebase.initializeApp({
 });
 
 const messaging = firebase.messaging();
-
-messaging.onBackgroundMessage(function(payload) {
-  console.log('[firebase-messaging-sw.js] Arka plan mesajı alındı ', payload);
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: 'https://cdn-icons-png.flaticon.com/512/1037/1037916.png',
-    vibrate: [200, 100, 200],
-  };
-
-  self.registration.showNotification(notificationTitle, notificationOptions);
-});
