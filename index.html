@@ -1,221 +1,65 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Hatırlatıcı 💖</title>
-  <link rel="manifest" href="manifest.json" />
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap" rel="stylesheet">
-  <meta name="theme-color" content="#ffe0ec">
-  <style>
-    body {
-      font-family: 'Quicksand', sans-serif;
-      background: linear-gradient(135deg, #ffe0ec, #ffe8f4);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      margin: 0;
-    }
-
-    h1 {
-      color: #d6336c;
-      font-size: 2rem;
-      margin-bottom: 10px;
-    }
-
-    .reminder-form {
-      background: #fff;
-      padding: 20px;
-      border-radius: 20px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-
-    input[type="time"] {
-      padding: 10px;
-      border: 2px solid #ff99c8;
-      border-radius: 10px;
-      font-size: 1rem;
-      width: 100%;
-    }
-
-    button {
-      margin-top: 10px;
-      padding: 10px;
-      background: #ff69b4;
-      color: white;
-      border: none;
-      border-radius: 15px;
-      font-size: 1rem;
-      width: 100%;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #ff85c1;
-    }
-
-    .reminders {
-      margin-top: 20px;
-      width: 100%;
-      max-width: 400px;
-    }
-
-    .reminder {
-      background: #fff0f6;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 1rem;
-    }
-
-    .reminder span {
-      flex: 1;
-    }
-
-    .reminder button {
-      margin-left: 5px;
-      font-size: 0.8rem;
-      padding: 5px 10px;
-      border-radius: 10px;
-    }
-
-    .love {
-      margin-top: 20px;
-      font-size: 1.5rem;
-      color: #e63989;
-      display: none;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>💊 İlaç Hatırlatma Güzelim</title>
+<link rel="manifest" href="manifest.json" />
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #ffc1cc, #ffe6f0);
+    color: #5a2a3e;
+    text-align: center;
+    padding: 20px;
+  }
+  h1 {
+    margin-bottom: 8px;
+  }
+  input[type="time"] {
+    padding: 10px;
+    margin: 10px 5px;
+    border-radius: 8px;
+    border: 2px solid #f29ca6;
+  }
+  button {
+    padding: 10px 20px;
+    background-color: #f76c91;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 12px;
+  }
+  button:hover {
+    background-color: #e14f78;
+  }
+  #message {
+    margin-top: 20px;
+    font-size: 1.4rem;
+    color: #ff2d55;
+    font-weight: 700;
+    user-select:none;
+  }
+</style>
 </head>
 <body>
-
-  <h1>Hatırlatıcı 💊</h1>
-
-  <div class="reminder-form">
-    <input type="time" id="timeInput" />
-    <button onclick="addReminder()">Hatırlatma Ekle</button>
+  <h1>💊 İlaç Hatırlatma Güzelim</h1>
+  <p>Gün içinde 3 ilaç saatini ayarlayabilirsin, ben sana hatırlatırım 💖</p>
+  
+  <div>
+    <input type="time" id="time1" />
+    <input type="time" id="time2" />
+    <input type="time" id="time3" />
   </div>
-
-  <div class="reminders" id="reminderList"></div>
-
-  <div class="love" id="loveMessage">💖 Seni seviyorum 💖</div>
-
-  <script>
-    const reminders = [];
-
-    function addReminder() {
-      const time = document.getElementById('timeInput').value;
-      if (!time) return alert("Lütfen bir saat seç");
-
-      const id = Date.now();
-      reminders.push({ id, time });
-      renderReminders();
-      scheduleNotification(id, time);
-    }
-
-    function deleteReminder(id) {
-      const index = reminders.findIndex(r => r.id === id);
-      if (index !== -1) {
-        reminders.splice(index, 1);
-        renderReminders();
-      }
-    }
-
-    function editReminder(id) {
-      const newTime = prompt("Yeni saati gir (HH:MM)", "12:00");
-      if (!newTime) return;
-      const reminder = reminders.find(r => r.id === id);
-      if (reminder) {
-        reminder.time = newTime;
-        renderReminders();
-        scheduleNotification(id, newTime);
-      }
-    }
-
-    function renderReminders() {
-      const list = document.getElementById('reminderList');
-      list.innerHTML = "";
-      reminders.forEach(reminder => {
-        const div = document.createElement('div');
-        div.className = "reminder";
-        div.innerHTML = `
-          <span>${reminder.time}</span>
-          <button onclick="editReminder(${reminder.id})">Düzenle</button>
-          <button onclick="deleteReminder(${reminder.id})">Sil</button>
-        `;
-        list.appendChild(div);
-      });
-    }
-
-    function scheduleNotification(id, time) {
-      const [hour, minute] = time.split(':').map(Number);
-      const now = new Date();
-      let target = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0);
-      if (target < now) target.setDate(target.getDate() + 1);
-
-      const diff = target - now;
-
-      // Ana hatırlatma
-      setTimeout(() => {
-        showNotification(`⏰ Hatırlatma: Saat ${time} oldu!`);
-        vibratePhone();
-        playSound();
-        askConfirmation();
-      }, diff);
-
-      // Jest hatırlatma
-      setTimeout(() => {
-        showNotification("💖 İlacını aldın mı güzelim?");
-        vibratePhone();
-        playSound();
-        askConfirmation();
-      }, diff + 1800000);
-    }
-
-    function showNotification(message) {
-      if (Notification.permission === "granted") {
-        new Notification(message);
-      } else if (Notification.permission !== "denied") {
-        Notification.requestPermission().then(permission => {
-          if (permission === "granted") {
-            new Notification(message);
-          }
-        });
-      }
-    }
-
-    function vibratePhone() {
-      if ("vibrate" in navigator) {
-        navigator.vibrate(3000);
-      }
-    }
-
-    function playSound() {
-      const audio = new Audio("https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg");
-      audio.play();
-    }
-
-    function askConfirmation() {
-      const confirmed = confirm("İlacını aldın mı güzelim?");
-      if (confirmed) {
-        document.getElementById("loveMessage").style.display = "block";
-      }
-    }
-
-    // Service worker kaydı
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('service-worker.js')
-          .then(reg => console.log('[SW] Kayıt başarılı:', reg.scope))
-          .catch(err => console.error('[SW] Kayıt hatası:', err));
-      });
-    }
-  </script>
+  
+  <button id="saveBtn">Kaydet & Bildirimleri Aç</button>
+  
+  <div id="message"></div>
+  
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
