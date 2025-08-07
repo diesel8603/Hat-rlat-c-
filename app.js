@@ -1,79 +1,62 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // Firebase bilgilerini buraya kendi bilgilerinle değiştir
-  const firebaseConfig = {
-    apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
-    authDomain: "live-chat-9d81c.firebaseapp.com",
-    databaseURL: "https://live-chat-9d81c-default-rtdb.firebaseio.com",
-    projectId: "live-chat-9d81c",
-    storageBucket: "live-chat-9d81c.appspot.com",
-    messagingSenderId: "253242248304",
-    appId: "1:253242248304:web:3e440995fe27bc8e2fb8b5"
-  };
+// Firebase ayarların
+const firebaseConfig = {
+  apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
+  authDomain: "live-chat-9d81c.firebaseapp.com",
+  projectId: "live-chat-9d81c",
+  messagingSenderId: "253242248304",
+  appId: "1:253242248304:web:3e440995fe27bc8e2fb8b5"
+};
 
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
-  const messaging = firebase.messaging();
+firebase.initializeApp(firebaseConfig);
 
-  // Service Worker kaydı
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/firebase-messaging-sw.js')
-      .then(registration => {
-        messaging.useServiceWorker(registration);
-        console.log('Service Worker kayıt başarılı');
-      })
-      .catch(err => console.error('Service Worker kayıt hatası:', err));
-  } else {
-    console.warn('Tarayıcı Service Worker desteklemiyor.');
-  }
+const messaging = firebase.messaging();
 
-  const vapidPublicKey = "BO9jlWMnM7RP4MeQWF9E8kph74Hwnl8ZepoLpvHSA7OhCq8Q9xLTX3vMnIWRXBw5WVGy2ufrqYcTIBkR5TQARdE";
+document.getElementById("addBtn").addEventListener("click", () => {
+  const time = document.getElementById("timeInput").value;
+  if (!time) return alert("Lütfen bir saat seç 💖");
 
-  const timeInputs = [
-    document.getElementById('time1'),
-    document.getElementById('time2'),
-    document.getElementById('time3'),
-  ];
-  const saveBtn = document.getElementById('saveBtn');
-  const messageDiv = document.getElementById('message');
+  const li = document.createElement("li");
+  li.textContent = `⏰ ${time} - Hatırlatma Ayarlandı`;
+  document.getElementById("reminderList").appendChild(li);
 
-  async function requestPermissionAndGetToken() {
-    try {
-      const permission = await Notification.requestPermission();
-      if (permission !== 'granted') throw new Error('Bildirim izni reddedildi.');
+  const now = new Date();
+  const [hour, minute] = time.split(":");
+  const reminderTime = new Date();
+  reminderTime.setHours(hour, minute, 0, 0);
 
-      const currentToken = await messaging.getToken({ vapidKey: vapidPublicKey });
-      if (!currentToken) throw new Error('Token alınamadı.');
+  let delay = reminderTime.getTime() - now.getTime();
+  if (delay < 0) delay += 24 * 60 * 60 * 1000;
 
-      console.log('FCM Token:', currentToken);
-      messageDiv.textContent = "Bildirim izni verildi 💌";
+  // Hatırlatma bildirimi
+  setTimeout(() => {
+    sendNotification("💊 İlaç zamanı 💖", "Canım, ilacını alma vakti geldi!");
+    navigator.vibrate([300, 100, 300]);
 
-      await db.ref('usersTokens/' + currentToken).set(true);
-      return currentToken;
-    } catch (error) {
-      messageDiv.textContent = `Hata: ${error.message}`;
-      throw error;
-    }
-  }
+    // 30 dakika sonra "aldın mı" sorusu
+    setTimeout(() => {
+      sendConfirmNotification();
+    }, 30 * 60 * 1000);
 
-  saveBtn.onclick = async () => {
-    try {
-      const reminders = timeInputs
-        .map(input => input.value.trim())
-        .filter(time => time !== '');
-
-      if (reminders.length === 0) {
-        alert('Lütfen en az bir ilaç zamanı seçin!');
-        return;
-      }
-
-      await requestPermissionAndGetToken();
-
-      await db.ref('reminders').set(reminders);
-
-      messageDiv.textContent = 'İlaç hatırlatıcılar ayarlandı!';
-      console.log('Hatırlatmalar kaydedildi:', reminders);
-    } catch (error) {
-      console.error('Kaydetme hatası:', error);
-    }
-  };
+  }, delay);
 });
+
+function sendNotification(title, body) {
+  if (Notification.permission === "granted") {
+    new Notification(title, { body, icon: "icon.png" });
+  }
+}
+
+function sendConfirmNotification() {
+  if (Notification.permission === "granted") {
+    const n = new Notification("💌 İlaçlarını aldın mı güzelim?", {
+      body: "Evet 💖 butonuna tıkla",
+      icon: "icon.png"
+    });
+    n.onclick = () => {
+      new Notification("💖 Seni seviyorum 💖", { icon: "icon.png" });
+    };
+  }
+}
+
+Notification.requestPermission();
+      
