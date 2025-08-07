@@ -11,6 +11,12 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
+const messaging = firebase.messaging();
+
+const vapidPublicKey = "BO9jlWMnM7RP4MeQWF9E8kph74Hwnl8ZepoLpvHSA7OhCq8Q9xLTX3vMnIWRXBw5WVGy2ufrqYcTIBkR5TQARdE";
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
 
 const timeInputs = [
   document.getElementById('time1'),
@@ -115,3 +121,4 @@ if ('serviceWorker' in navigator) {
     }
   });
 }
+
