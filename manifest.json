@@ -1,18 +1,13 @@
 {
-  "name": "İlaç Hatırlatma Güzelim",
-  "short_name": "Hatırlatıcı",
-  "start_url": "./",
+  "name": "İlaç Hatırlatma 💖",
+  "short_name": "Hatırlatma",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#ffe6f0",
-  "theme_color": "#f76c91",
+  "background_color": "#ffdde1",
+  "description": "Sevgilin için romantik ilaç hatırlatma uygulaması 💊",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/1037/1037916.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    },
-    {
-      "src": "https://cdn-icons-png.flaticon.com/512/1037/1037916.png",
+      "src": "icon.png",
       "sizes": "192x192",
       "type": "image/png"
     }
