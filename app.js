@@ -1,3 +1,10 @@
+console.log("app.js yüklendi");
+const addBtn = document.getElementById("addBtn");
+console.log("addBtn:", addBtn);
+
+addBtn.addEventListener("click", () => console.log("Butona basıldı"));
+
+
 // Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
@@ -69,3 +76,4 @@ function sendConfirmNotification() {
     };
   }
 }
+
