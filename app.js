@@ -1,4 +1,4 @@
-// Firebase ayarların
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBXXXCLGe70id54wlMhUtHQHOJe8l4a6wA",
   authDomain: "live-chat-9d81c.firebaseapp.com",
@@ -8,31 +8,43 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
 const messaging = firebase.messaging();
 
-document.getElementById("addBtn").addEventListener("click", () => {
-  const time = document.getElementById("timeInput").value;
-  if (!time) return alert("Lütfen bir saat seç 💖");
+const addBtn = document.getElementById("addBtn");
+const timeInput = document.getElementById("timeInput");
+const reminderList = document.getElementById("reminderList");
+
+Notification.requestPermission().then(permission => {
+  if (permission !== "granted") {
+    alert("Bildirim izni verilmedi, hatırlatmalar çalışmayabilir.");
+  }
+});
+
+addBtn.addEventListener("click", (event) => {
+  event.preventDefault(); // form varsa sayfa yenilenmesini engelle
+
+  const time = timeInput.value;
+  if (!time) {
+    alert("Lütfen bir saat seç 💖");
+    return;
+  }
 
   const li = document.createElement("li");
   li.textContent = `⏰ ${time} - Hatırlatma Ayarlandı`;
-  document.getElementById("reminderList").appendChild(li);
+  reminderList.appendChild(li);
 
   const now = new Date();
-  const [hour, minute] = time.split(":");
+  const [hour, minute] = time.split(":").map(Number);
   const reminderTime = new Date();
   reminderTime.setHours(hour, minute, 0, 0);
 
   let delay = reminderTime.getTime() - now.getTime();
   if (delay < 0) delay += 24 * 60 * 60 * 1000;
 
-  // Hatırlatma bildirimi
   setTimeout(() => {
     sendNotification("💊 İlaç zamanı 💖", "Canım, ilacını alma vakti geldi!");
-    navigator.vibrate([300, 100, 300]);
+    if (navigator.vibrate) navigator.vibrate([300, 100, 300]);
 
-    // 30 dakika sonra "aldın mı" sorusu
     setTimeout(() => {
       sendConfirmNotification();
     }, 30 * 60 * 1000);
@@ -57,6 +69,3 @@ function sendConfirmNotification() {
     };
   }
 }
-
-Notification.requestPermission();
-      
