@@ -1,46 +1,29 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>İlaç Hatırlatma Sistemi</title>
-
-  <!-- AOS CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="stylesheet" href="style.css" />
-
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container" data-aos="fade-up">
-    <h1>İlaç Hatırlatma Sistemi ❤️</h1>
-    
+  <div class="container">
+    <h1>💊 İlaç Hatırlatma Sistemi</h1>
     <form id="reminderForm">
       <label for="reminderTime">Hatırlatma Saati:</label>
-      <input type="time" id="reminderTime" required />
-
-      
-
-      <button type="submit">Hatırlatıcıyı Kaydet</button>
+      <input type="time" id="reminderTime" required>
+      <button type="submit">Kaydet</button>
     </form>
-
-    <div id="status" class="status"></div>
+    <p id="status"></p>
   </div>
 
-  <!-- Bildirim sesi -->
+  <!-- Ses -->
   <audio id="reminderSound" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
 
-  <!-- AOS JS -->
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
   <script src="app.js"></script>
-  
-  <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-    .then(() => console.log('Service Worker kaydedildi.'))
-    .catch(err => console.error('Service Worker kaydı başarısız:', err));
-  }
-</script>
-
 </body>
 </html>
