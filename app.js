@@ -1,104 +1,56 @@
-AOS.init();
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyB0wYo4y9xi1lZSwi02iJQ7v0iZ-nq8y-U",
+  authDomain: "chat-f5f0c.firebaseapp.com",
+  databaseURL: "https://chat-f5f0c-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "chat-f5f0c",
+  storageBucket: "chat-f5f0c.firebasestorage.app",
+  messagingSenderId: "571398938754",
+  appId: "1:571398938754:web:147a9e1d0106e8a0a4d49b",
+  measurementId: "G-CFZ8PWP6DY"
+};
 
-const form = document.getElementById('reminderForm');
-const status = document.getElementById('status');
-const reminderSound = document.getElementById('reminderSound');
+firebase.initializeApp(firebaseConfig);
 
-let reminderTimeout1 = null;
-let reminderTimeout2 = null;
+const messaging = firebase.messaging();
+const statusEl = document.getElementById('status');
 
-// Sabit isim burada global olarak tanımlandı
-const loverName = 'Güzelim';
+// Service Worker kaydı
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('firebase-messaging-sw.js')
+    .then((registration) => {
+      console.log('SW kaydedildi:', registration);
+      messaging.useServiceWorker(registration);
 
-function showNotification(title, body) {
-  if (Notification.permission === 'granted') {
-    const options = {
-      body,
-      vibrate: [200, 100, 200],
-      icon: 'icon.png',
-    };
-    new Notification(title, options);
-  }
-}
-
-function playSound() {
-  reminderSound.currentTime = 0;
-  reminderSound.play();
-}
-
-function vibrate() {
-  if (navigator.vibrate) {
-    navigator.vibrate([200, 100, 200]);
-  }
-}
-
-function scheduleReminder(timeStr) {
-  const now = new Date();
-  const [hour, minute] = timeStr.split(':').map(Number);
-  let reminderDate = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hour, minute, 0);
-
-  if (reminderDate < now) {
-    reminderDate.setDate(reminderDate.getDate() + 1); // Ertesi gün
-  }
-
-  const diffMs = reminderDate.getTime() - now.getTime();
-
-  // İlk bildirim
-  reminderTimeout1 = setTimeout(() => {
-    const title = 'İlaç Vakti Geldi Güzelimm ❤️';
-    const body = `${loverName}, güzelim ilaç vakti geldi! Unutma ❤️`;
-    showNotification(title, body);
-    playSound();
-    vibrate();
-    status.textContent = 'İlk hatırlatma yapıldı.';
-
-    // 30 dakika sonra ikinci hatırlatma
-    reminderTimeout2 = setTimeout(() => {
-      const title2 = 'İlaç Hatırlatma 🌹';
-      const body2 = `${loverName}, ilacını aldın mı prensesimm?`;
-      showNotification(title2, body2);
-      playSound();
-      vibrate();
-      status.textContent = 'İkinci hatırlatma yapıldı.';
-    }, 1000 * 60 * 30);
-
-  }, diffMs);
-
-  status.textContent = `Hatırlatma ${reminderDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} için ayarlandı.`;
-}
-
-function requestPermission() {
-  if ('Notification' in window) {
-    if (Notification.permission === 'default') {
-      Notification.requestPermission().then(permission => {
-        if (permission !== 'granted') {
-          alert('Bildirim izni vermen gerekiyor.');
+      // İzin iste
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          messaging.getToken({ vapidKey: '🔥 BURAYA Firebase Console’dan aldığın Web Push Sertifikası (VAPID key) gelecek 🔥' })
+            .then((token) => {
+              console.log("FCM Token:", token);
+              statusEl.innerHTML = "Bildirim izni verildi.<br>Token: <br>" + token;
+              // Bu token'ı sunucuya kaydet
+            });
+        } else {
+          statusEl.textContent = "Bildirim izni verilmedi.";
         }
       });
-    }
-  } else {
-    alert('Tarayıcınız bildirimleri desteklemiyor.');
-  }
+    })
+    .catch(err => console.error('SW hatası:', err));
 }
 
-form.addEventListener('submit', e => {
+// Formdan saat seçme
+document.getElementById('reminderForm').addEventListener('submit', (e) => {
   e.preventDefault();
+  const time = document.getElementById('reminderTime').value;
+  statusEl.textContent = `Hatırlatma saati kaydedildi: ${time}`;
+  // Burada bu zamanı sunucuya gönderip FCM ile planlama yapılmalı
+});
 
-  const reminderTime = form.reminderTime.value;
-
-  if (!reminderTime) {
-    alert('Lütfen saat seç Bitanem.');
-    return;
-  }
-
-  requestPermission();
-
-  // Önceki hatırlatıcıları temizle
-  if (reminderTimeout1) clearTimeout(reminderTimeout1);
-  if (reminderTimeout2) clearTimeout(reminderTimeout2);
-
-  // Hatırlatıcıyı zamanla
-  scheduleReminder(reminderTime);
-
-  status.textContent = `Hatırlatıcı kaydedildi, ${loverName}!`;
+// Gelen bildirimleri dinle (site açıkken)
+messaging.onMessage((payload) => {
+  console.log('Bildirim geldi (ön plan):', payload);
+  const audio = document.getElementById('reminderSound');
+  audio.play();
+  new Notification(payload.notification.title, payload.notification);
 });
