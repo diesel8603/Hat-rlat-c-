@@ -25,5 +25,38 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-messaging-compat.js"></script>
   <script src="app.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging.js"></script>
+<script>
+  // Firebase config (senin verdiğin)
+  const firebaseConfig = {
+    apiKey: "AIzaSyB0wYo4y9xi1lZSwi02iJQ7v0iZ-nq8y-U",
+    authDomain: "chat-f5f0c.firebaseapp.com",
+    databaseURL: "https://chat-f5f0c-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "chat-f5f0c",
+    storageBucket: "chat-f5f0c.firebasestorage.app",
+    messagingSenderId: "571398938754",
+    appId: "1:571398938754:web:147a9e1d0106e8a0a4d49b",
+    measurementId: "G-CFZ8PWP6DY"
+  };
+
+  // Başlat
+  firebase.initializeApp(firebaseConfig);
+  const messaging = firebase.messaging();
+
+  // İzin iste ve token al
+  Notification.requestPermission().then((permission) => {
+    if (permission === "granted") {
+      messaging.getToken({ vapidKey: "BLWWnblgtB6YEbqPznszlzMlL-V8c1sX5LWoiwLbyxNWSj_Yq07ln1q5K-CsuPr7BhxkTbBfn9dTo_xZ7mfziVs" })
+        .then((token) => {
+          console.log("Token:", token);
+          // Burada token’i PHP’ye AJAX ile gönderip veritabanına kaydedeceksin
+        });
+    }
+  });
+</script>
+  
 </body>
 </html>
+
